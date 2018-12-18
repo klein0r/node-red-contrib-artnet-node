@@ -23,9 +23,7 @@
     "artnet",
     "IoT"
   ],
-  "dependencies": {
-    "artnet": "^1.4.0"
-  },
+  "dependencies": {},
   "node-red": {
     "nodes": {
       "artnet": "node-red-contrib-artnet-node.js"

@@ -8,18 +8,23 @@ module.exports = function(RED) {
 
         var node = this;
 
-        var artnetConnection = new artnet({host: config.host, port: parseInt(config.port, 10) || 6454});
+        this.on('close', function (done) {
+            
+        });
     }
 
     RED.nodes.registerType('artnet-node', ArtNetNode);
 
     function ArtNetCommand(config) {
         RED.nodes.createNode(this, config);
+
         var node = this;
+        node.artnetnode = RED.nodes.getNode(config.artnetnode);
 
         node.on('input', function(msg) {
-            msg.payload = msg.payload.toLowerCase();
-            node.send(msg);
+            if (node.artnetnode) {
+                
+            }
         });
     }
 
