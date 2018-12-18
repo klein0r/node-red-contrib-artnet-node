@@ -1,0 +1,35 @@
+{
+  "name": "node-red-contrib-artnet-node",
+  "description": "Node-RED node that controls lights via ArtNet",
+  "version": "0.0.1",
+  "author": {
+    "name": "Matthias Kleine",
+    "email": "info@haus-automatisierung.com",
+    "url": "https://haus-automatisierung.com/"
+  },
+  "homepage": "https://github.com/klein0r/node-red-contrib-artnet-node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klein0r/node-red-contrib-artnet-node.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/klein0r/node-red-contrib-artnet-node/blob/master/LICENSE"
+    }
+  ],
+  "keywords": [
+    "DMX",
+    "artnet",
+    "IoT"
+  ],
+  "dependencies": {
+    "artnet": "^1.4.0"
+  },
+  "node-red": {
+    "nodes": {
+      "artnet": "node-red-contrib-artnet-node.js"
+    }
+  },
+  "license": "MIT"
+}
