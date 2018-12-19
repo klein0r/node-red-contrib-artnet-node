@@ -102,8 +102,6 @@ module.exports = function(RED) {
             if (diff / steps <= 1) {
                 steps = diff;
             }
-            // should we fade up or down?
-            var direction = (newValue > oldValue);
 
             var valuePerStep = diff / steps;
             var timePerStep = transitionTime / steps;
@@ -111,7 +109,7 @@ module.exports = function(RED) {
             var timeoutId;
 
             for (var i = 1; i < steps; i++) {
-                var valueStep = direction === true ? valuePerStep : -valuePerStep;
+                var valueStep = (newValue > oldValue) ? valuePerStep : -valuePerStep;
                 var iterationValue = oldValue + i * valueStep;
 
                 // create time outs for each step
@@ -155,14 +153,6 @@ module.exports = function(RED) {
 
                 var transition = payload.transition;
                 var duration = parseInt(payload.duration || 0);
-
-                if (payload.start_buckets && Array.isArray(payload.start_buckets)) {
-                    for (var i = 0; i < payload.start_buckets.length; i++) {
-                        node.artnetnode.clearTransition(payload.start_buckets[i].channel, true);
-                        node.artnetnode.setCh(payload.start_buckets[i].channel, payload.start_buckets[i].value);
-                    }
-                    node.artnetnode.sendData();
-                }
 
                 if (payload.channel) {
                     node.artnetnode.setCh(payload.channel, payload.value, transition, duration);
