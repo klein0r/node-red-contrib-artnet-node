@@ -1,4 +1,4 @@
-module.exports = function(RED) {
+module.exports = function (RED) {
 
     "use strict";
     const ArtNetClient = require('./lib/artnet-client.js');
@@ -27,14 +27,17 @@ module.exports = function(RED) {
             node.sendData();
         };
 
-        node.setCh = function (address, value, transition, transitionTime) {
+        node.setCh = function (address, value, transition, transitionTime, delay) {
             if (address > 0) {
-                if (transition) {
-                    node.addTransition(address, transition, value); // TODO move to input
-                    node.fadeToValue(address, parseInt(value), transitionTime);
-                } else {
-                    node.nodeData[address - 1] = parseInt(value);
-                }
+                setTimeout(function () {
+                    if (transition) {
+                        node.addTransition(address, transition, value); // TODO move to input
+                        node.fadeToValue(address, parseInt(value), transitionTime);
+                    } else {
+                        node.nodeData[address - 1] = parseInt(value);
+                        node.sendData();
+                    }
+                }, parseInt(delay || 0));
             }
         };
 
@@ -151,22 +154,27 @@ module.exports = function(RED) {
             if (node.artnetnode) {
                 var payload = msg.payload;
 
-                var transition = payload.transition;
-                var duration = parseInt(payload.duration || 0);
+                if (typeof msg.payload === 'object') {
+                    var transition = payload.transition;
+                    var duration = parseInt(payload.duration || 0);
+                    var delay = parseInt(payload.delay || 0);
 
-                if (payload.channel) {
-                    node.artnetnode.setCh(payload.channel, payload.value, transition, duration);
-                    node.artnetnode.sendData();
-                } else if (Array.isArray(payload.buckets)) {
-                    for (var i = 0; i < payload.buckets.length; i++) {
-                        node.artnetnode.clearTransition(payload.buckets[i].channel, true);
-                        node.artnetnode.setCh(payload.buckets[i].channel, payload.buckets[i].value, transition, duration);
-                    }
-                    if (!transition) {
-                        node.artnetnode.sendData();
+                    if (payload.channel) {
+                        node.artnetnode.setCh(payload.channel, payload.value, transition, duration, delay);
+                    } else if (Array.isArray(payload.buckets)) {
+                        for (var i = 0; i < payload.buckets.length; i++) {
+                            var bucket = payload.buckets[i];
+                            node.artnetnode.clearTransition(bucket.channel, true);
+                            node.artnetnode.setCh(bucket.channel, bucket.value, transition, duration, parseInt(bucket.delay || 0) + delay);
+                        }
+                        if (!transition) {
+                            node.artnetnode.sendData();
+                        }
+                    } else {
+                        node.error('Invalid payload');
                     }
                 } else {
-                    node.error('Invalid payload');
+                    node.error('Provide object as payload - see documentation for details');
                 }
             }
         });

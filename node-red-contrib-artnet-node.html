@@ -40,7 +40,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('artnet-command', {
         category: 'output',
-        color: '#a6bbcf',
+        color: '#e26700',
         defaults: {
             name: {value: ''},
             artnetnode: {type: 'artnet-node', required: true}
@@ -70,5 +70,64 @@
 </script>
 
 <script type="text/x-red" data-help-name="artnet-command">
-    <p>A simple node that converts the message payloads into all lower-case characters</p>
+<p>Send one or multiple commands at once to an ArtNet node.</p>
+<p><strong>Payload has to be an object!</strong></p>
+<dl class="message-properties">
+    <dt>channel<span class="property-type">integer</span></dt>
+    <dd>Numeric value in range 1 - 512</dd>
+    <dt>value <span class="property-type">integer</span></dt>
+    <dd>Numeric value in range 0 - 255</dd>
+    <dt class="optional">transition <span class="property-type">string</span></dt>
+    <dd>linear</dd>
+    <dt class="optional">duration <span class="property-type">integer</span></dt>
+    <dd>Transition duration in milliseconds</dd>
+    <dt class="optional">delay <span class="property-type">integer</span></dt>
+    <dd>Command / bucket delay in milliseconds</dd>
+</dl>
+<p>To set a single channel to a given value:</p>
+<pre>
+    msg.payload = {
+      channel: 1,
+      value: 255
+    };
+</pre>
+<p>To delay the action, use a delay node or pass the property delay. In this case, the command is delayed by 1 second:</p>
+<pre>
+msg.payload = {
+  channel: 1,
+  value: 255,
+  delay: 1000
+};
+</pre>
+<p>Changing multiple channels at once:</p>
+<pre>
+msg.payload = {
+  buckets: [
+    {channel: 1, value: 255},
+    {channel: 3, value: 80},
+    ...
+  ]
+};
+</pre>
+<p>You can also delay every single bucket:</p>
+<pre>
+msg.payload = {
+  buckets: [
+    {channel: 1, value: 255, delay: 1000},
+    {channel: 3, value: 80, delay: 2000},
+    ...
+  ]
+};
+</pre>
+<p>If you provide an additional delay on top level, the delays on the single buckets will be added. In this example, the first channel will be set to 255 after 2 seconds, and the third will be changed after 3 seconds.</p>
+<pre>
+msg.payload = {
+  delay: 1000,
+  buckets: [
+    {channel: 1, value: 255, delay: 1000},
+    {channel: 3, value: 80, delay: 2000},
+    ...
+  ]
+};
+</pre>
 </script>
