@@ -19,6 +19,7 @@
     }
   ],
   "keywords": [
+    "node-red",
     "DMX",
     "artnet",
     "IoT"
