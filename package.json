@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-artnet-node",
   "description": "Node-RED node that controls lights via ArtNet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Matthias Kleine",
     "email": "info@haus-automatisierung.com",
