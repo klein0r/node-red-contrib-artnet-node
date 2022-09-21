@@ -7,6 +7,10 @@ Based on
 - [gunnebo artnet](https://github.com/gunnebo-ab/node-red-contrib-artnet)
 - and [BrianMMcClain's Artnet Node Client](https://github.com/BrianMMcClain/artnet-node).
 
+## Sponsored by
+
+[![Node-RED-Master-Kurs](https://haus-automatisierung.com/images/ads/NodeRed-Kurs.png)](https://haus-automatisierung.com/nodered-kurs/?refid=nodered-artnet)
+
 ## Installation
 
 Run the following command in the root directory of your Node-RED install. Usually this is `~/.node-red`
@@ -22,7 +26,7 @@ npm install node-red-contrib-artnet-node
 - Connect RGB stripes or other lights to the first 7 channels
 - Play around with the flow below by injecting the messages
 
-```
+```json
 [
     {
         "id": "5e9f7365.11221c",
